@@ -15,13 +15,15 @@
 # Build bitcoind
 FROM ubuntu:20.04 as bitcoind-builder
 
+ENV TZ=Etc/UTC
+
 RUN mkdir -p /app \
   && chown -R nobody:nogroup /app
 WORKDIR /app
 
 # Source: https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md#ubuntu--debian
-RUN apt-get update && apt-get install -y make gcc g++ autoconf autotools-dev bsdmainutils build-essential git libboost-all-dev \
-  libcurl4-openssl-dev libdb++-dev libevent-dev libssl-dev libtool pkg-config python python-pip libzmq3-dev wget
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y make gcc g++ autoconf autotools-dev bsdmainutils build-essential git libboost-all-dev \
+  libcurl4-openssl-dev libdb++-dev libevent-dev libssl-dev libtool pkg-config python python3-pip libzmq3-dev wget 
 
 # VERSION: Bitcoin Core 0.20.1
 RUN git clone https://github.com/bitcoin/bitcoin \
